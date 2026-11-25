@@ -342,6 +342,19 @@ describe('KeyValuePipe', () => {
       reversed.set('b', 2);
       expect(pipe.transform(reversed, null)).toEqual(initial);
     });
+    it('should reuse the result in natural order when an unchanged Map has a NaN key', () => {
+      const pipe = new KeyValuePipe(defaultKeyValueDiffers);
+      const input = new Map([
+        [Number.NaN, 'not a number'],
+        [1, 'one'],
+      ]);
+      const result = pipe.transform(input, null);
+      expect(result).toEqual([
+        {key: Number.NaN, value: 'not a number'},
+        {key: 1, value: 'one'},
+      ]);
+      expect(pipe.transform(input, null)).toBe(result);
+    });
     it('should reorder when compareFn changes', () => {
       const pipe = new KeyValuePipe(defaultKeyValueDiffers);
       const input = new Map([

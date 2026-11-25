@@ -104,7 +104,7 @@ export class DefaultKeyValueDiffer<K, V> implements KeyValueDiffer<K, V>, KeyVal
     this._appendAfter = null;
 
     this._forEach(map, (value: any, key: any) => {
-      if (insertBefore && insertBefore.key === key) {
+      if (insertBefore && Object.is(insertBefore.key, key)) {
         this._maybeAddToChanges(insertBefore, value);
         this._appendAfter = insertBefore;
         insertBefore = insertBefore._next;
